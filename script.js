@@ -1,83 +1,88 @@
-console.log("person1: tickets");
-console.log("person2: tickets");
+const posts= [
+    {title:"post1", body: 'this is post1'},
+    {title:"post2", body: 'this is post2'}
+]
 
-const preMovie= async ()=> {
+let user=  {user1:'prince', lastactivitytime: new Date().toLocaleTimeString()}
 
-const wifebringingtickets= new Promise((resolve, reject) => {
-    setTimeout(() => {
-    resolve('tickets')
+console.log("initially posts are: ");
+posts.forEach((post)=>{
+    console.log(post.body);
 
+});
+
+console.log("last activity time:",user.lastactivitytime );
+
+async function updatetime(){
+
+    function getPost(){
         
-    }, 3000);
-})
-
-const getpopcorn= new Promise((resolve, reject) => {
-    setTimeout(() => {
-    resolve('popcorn')
+    
+            posts.forEach((post)=>{
+                console.log(post.body);
+    
+            });
+    
+        console.log("last activity time ",user.lastactivitytime);
+    
         
-    }, 5000);
-})
-
-const addbutter= new Promise((resolve, reject) => {
-
-    setTimeout(() => {
-    resolve('butter');
-
-        
-    }, 8000);
-})
-
-const getcolddrinks= new Promise((resolve, reject) => {
-
-    setTimeout(() => {
-    resolve('cold-drinks');
-
-        
-    }, 10000);
-})
-
-let tickets= await wifebringingtickets;
-
-console.log(`wife: I have the ${tickets}`)
-console.log("husband: lets go");
-console.log("wife: no am hungry, please get me something to eat");
-console.log("husband: alright..!, I get you a popcorn");
-
-let popcorn = await getpopcorn;
-
-console.log(`husband: here is your ${popcorn}, lets go to movie`);
-console.log(`wife: I want to add some butter on my ${popcorn}`);
-console.log("husband: ok I get you some butter on that");
-
-let butter= await addbutter;
-
-console.log(`husband: I have added ${butter} on your ${popcorn}`);
-console.log("husband: anything else darling");
-console.log("wife: I need something to drink, can you buy a cold drink?");
-console.log("husband: ok I get you a cold drink");
-
-let colddrink= await getcolddrinks;
-
-console.log(`husband: here is your ${colddrink} are we good to go now?`);
-console.log("wife: yeah lets go, we are running late");
-
-return tickets;
-
-};
+    }
+    
+    function createPost(post){
+    
+        return new Promise((resolve, reject) => {
+    
+            setTimeout(() => {
+    
+                posts.push(post);
+                updateLastUserActivityTime(new Date().toLocaleTimeString())
+                
+                resolve();
+    
+            }, 5000);
+    
+        })
+    }
 
 
+    
+    function updateLastUserActivityTime(time){
+            user.lastactivitytime= time;   
+    }
 
-preMovie().then((m)=>{
-    console.log(m);
+    function deletePost(){
+    
+        return new Promise((resolve, reject) => {
+    
+            setTimeout(() => {
 
-})
+                if(posts.length>0)
+                {
+                    posts.pop();
+                    updateLastUserActivityTime(new Date().toLocaleTimeString())
+
+                    resolve();
+                }
+                else{
+                    reject("No posts are there")
+                }
+            }, 10000);
+    
+        })
+    }
+
+    console.log("after adding one more post, last activity time got changes and one more post will be added");
+  
+    await createPost({title:"post3", body: 'this is post3'})
+    getPost()
+
+    console.log("after deleting the last post, last activity time got changed and last post will be deleted");
 
 
-
-console.log("person4: tickets");
-
-console.log("person5: tickets");
+    await deletePost();
+    getPost();
 
 
+}
 
-
+updatetime()
